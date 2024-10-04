@@ -876,7 +876,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
     // Random String Generator (Max length 0x + 15 = 17)
     function _randomString() private {
 
-		uint256 length = 15;
+	uint256 length = 15;
 
         bytes memory randomWord = new bytes(length);
         /// Since we have 15 Characters
@@ -921,13 +921,13 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
         address referreraddress = _searchaddress_bycashbackcode[_cashbackcode];
 
-           User storage u                          = _user[msg.sender];
-           User storage ureferrer                  = _user[referreraddress];
+        User storage u                          = _user[msg.sender];
+        User storage ureferrer                  = _user[referreraddress];
 
-            //  Onlyonce - Update registration time
+        //  Onlyonce - Update registration time
         if (u.unixregister == 0) { 
-			u.unixregister = block.timestamp;
-		}  
+	    u.unixregister = block.timestamp;
+	}  
 
        
         if (keccak256(abi.encodePacked(u.cashbackcode)) == keccak256(abi.encodePacked("")) ) {    	  
@@ -1003,14 +1003,14 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         
         /// Token Price 18 Decimal --> Example BTC $50123 -- > 50123000000000000000000
 
-        Tokenlist storage t                 = _tokenlist[TokenAddress];
-        User storage u                      = _user[msg.sender];
-        Stat storage w                      = _stat[TokenAddress][msg.sender];
+        Tokenlist storage t             = _tokenlist[TokenAddress];
+        User storage u                  = _user[msg.sender];
+        Stat storage w                  = _stat[TokenAddress][msg.sender];
        
         require(amount != 0);
-		require(add(w.depositparameter, amount) < add(t.max_contribution,1));       // The total of old and new deposits cannot exceed the maximum contribution
+	require(add(w.depositparameter, amount) < add(t.max_contribution,1));       // The total of old and new deposits cannot exceed the maximum contribution
 
-		// Remaining Balance -> tokens that are still stored + new amount must <= Max Contribution
+	// Remaining Balance -> tokens that are still stored + new amount must <= Max Contribution
 
         // Onlyonce - Update registration time
         if (u.unixregister == 0) {  u.unixregister = block.timestamp; }  
@@ -1020,14 +1020,14 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         if (!t.contractstatus) {
             revert TokenNotRegistered();  //Revert, if the token address entered has not been added
         } else { 
-            ERC20Interface token 			= ERC20Interface(TokenAddress);       
-			require(token.transferFrom(msg.sender, address(this), amount));	
+            ERC20Interface token 	= ERC20Interface(TokenAddress);       
+	    require(token.transferFrom(msg.sender, address(this), amount));	
         }
 
-		if (!u.status) {
+	if (!u.status) {
             /// This happens only once during the first hold.
             _id++;   
-			_idnumber[_id] 			        = msg.sender; 
+	    _idnumber[_id] 	            = msg.sender; 
             w.unix_lastwithdraw             = block.timestamp;
 			
             // Checking if the cashback code has been stored?
@@ -1038,8 +1038,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
                 emit onCashbackCode(msg.sender, u.cashbackcode, u.firsttimebuybitcoin);	
             }
-			_randomString(); /// This happens only once during the first hold.
-		}
+	    _randomString(); /// This happens only once during the first hold.
+	}
 
         // -- Checking Affiliate --
         string memory ref                   = u.cashbackcode;
@@ -1058,11 +1058,11 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         w.depositparameter                  = add(w.depositparameter,amount);  
 
        if (!w.activeuser) {
-            w.activeuser                = true; 
-            w.tokenaddress              = TokenAddress;
-            w.useraddress               = msg.sender; 
-            w.tokendecimal              = t.tokendecimal;
-            w.tokensymbol               = t.tokensymbol;
+            w.activeuser                    = true; 
+            w.tokenaddress                  = TokenAddress;
+            w.useraddress                   = msg.sender; 
+            w.tokendecimal                  = t.tokendecimal;
+            w.tokensymbol                   = t.tokensymbol;
               
             t.activeuser++; 
             t.totaluser++;                                 
@@ -1191,7 +1191,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             u.status      = true;
         } 
 
-	    uint256 endtime		                = add(block.timestamp, t.holdingtime_inseconds);	// block.timestamp + Holding Time (in seconds) 
+	uint256 endtime		            = add(block.timestamp, t.holdingtime_inseconds);	// block.timestamp + Holding Time (in seconds) 
 
         /// Update Struct - Safe User [S]
         s.amount                            = NewContribution;
@@ -1214,11 +1214,11 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         s.usdvalue_deposit                  = mul(s.amount,s.tokenprice_start);
 
         if ( s.affiliatebonus != 0 ){	
-		s.percentage_affiliate 	            = div(mul(s.affiliatebonus, _twenty), s.amount) ; 
+	s.percentage_affiliate 	            = div(mul(s.affiliatebonus, _twenty), s.amount) ; 
         }
 
         if ( s.not_eligible != 0 ){	
-		s.percentage_not_eligible	    = div(mul(s.not_eligible, _twenty), s.amount) ; 
+	s.percentage_not_eligible	    = div(mul(s.not_eligible, _twenty), s.amount) ; 
         }		
 
          /* There are no changes to the data, so the data remains default
@@ -1249,7 +1249,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
     function _history1(address TokenAddress, uint256 struct_id, uint256 tokenbalance, uint256 tokenbalance_sync) private {
 
-        Safe        storage s               = _safes[struct_id];
+            Safe        storage s               = _safes[struct_id];
 
         if ( s.affiliatebonus != 0 ) {
 
@@ -1323,8 +1323,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
              v_deployer.code                = 3;   
 
             if ( sub(s.not_eligible, 1 ) >= div(s.amount,10 ) ) {
-                v_deployer.transactiontype     = "Fee 2% + Without Cashback";  
-                v_deployer.code                = 4; 
+                v_deployer.transactiontype  = "Fee 2% + Without Cashback";  
+                v_deployer.code             = 4; 
             } 
         }
 
@@ -1391,8 +1391,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             if(s.endtime <= block.timestamp ){ //--o  Hold Complete 
 
                 // Calculate the difference (in seconds) between the time of the last withdrawal and the current time
-                s.timeframe  			            = sub(block.timestamp, s.lasttime);	
-                s.payment_queue 	                = add(s.amountbalance, s.cashbackbalance);			 
+                s.timeframe  			    = sub(block.timestamp, s.lasttime);	
+                s.payment_queue 	            = add(s.amountbalance, s.cashbackbalance);			 
                 s.amountbalance                     = 0;   
                 s.lasttime                          = block.timestamp;
 
@@ -1430,54 +1430,54 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         uint256 onemonth            = div(mul(s.amount, s.percentage), 100 );
         uint256 CalculateWithdraw   = div(mul(onemonth, s.timeframe),2592000);
         
-		/// S.amount * s.percentage / 100 * timeframe / seconds30days	
+	/// S.amount * s.percentage / 100 * timeframe / seconds30days	
 		                         
-		uint256 MaxWithdraw 		= div(s.amount, 10);
+	uint256 MaxWithdraw 		= div(s.amount, 10);
 
         uint256 MaxAccumulation;
         uint256 payment_queue;
         uint256 tokenreceived;
 			
-		// Maximum withdraw before unlocked, Max 10% Accumulation
-		//if (CalculateWithdraw >= MaxWithdraw) { MaxAccumulation = MaxWithdraw;  } else { MaxAccumulation = CalculateWithdraw;  }
+	// Maximum withdraw before unlocked, Max 10% Accumulation
+	//if (CalculateWithdraw >= MaxWithdraw) { MaxAccumulation = MaxWithdraw;  } else { MaxAccumulation = CalculateWithdraw;  }
         MaxAccumulation = (CalculateWithdraw >= MaxWithdraw) ? MaxWithdraw : CalculateWithdraw;
 
-		// Maximum withdraw = User Amount Balance   
-		//if (MaxAccumulation >= s.amountbalance) {  payment_queue = s.amountbalance; } else { payment_queue = MaxAccumulation; }
+	// Maximum withdraw = User Amount Balance   
+	//if (MaxAccumulation >= s.amountbalance) {  payment_queue = s.amountbalance; } else { payment_queue = MaxAccumulation; }
         payment_queue = MaxAccumulation >= s.amountbalance ? s.amountbalance : MaxAccumulation;
 						
-		s.amountbalance 			    = sub(s.amountbalance, payment_queue);
+	s.amountbalance 		= sub(s.amountbalance, payment_queue);
 		
-		if (s.cashbackbalance != 0) { 
-		    s.cashbackstatus 	        = true ; 
-		    s.payment_queue 		    = add(s.cashbackbalance, payment_queue); 
-		} else {
-            s.payment_queue 			= payment_queue;
+	if (s.cashbackbalance != 0) { 
+	    s.cashbackstatus 	        = true ; 
+	    s.payment_queue 		= add(s.cashbackbalance, payment_queue); 
+	} else {
+            s.payment_queue 		= payment_queue;
         }
 		
         User storage u                  = _user[msg.sender];
 
-        s.cashbackbalance 			    = 0; 
-		s.lasttime 					    = block.timestamp;
+        s.cashbackbalance 		= 0; 
+	s.lasttime 			= block.timestamp;
 
-        uint256 affiliateandfee 	    = div(mul(s.amount, 12), 100) ;         // 12%
-		uint256 maxcashback 		    = div(mul(s.amount, 16), 100) ;         // 16%
+        uint256 affiliateandfee 	= div(mul(s.amount, 12), 100) ;         // 12%
+	uint256 maxcashback 		= div(mul(s.amount, 16), 100) ;         // 16%
 
-		uint256 firstid                 = s.id; 
+	uint256 firstid                 = s.id; 
         
 		
-		/*if (keccak256(abi.encodePacked(u.cashbackcode)) == keccak256(abi.encodePacked("0x000000000000000")) && _idaddress[msg.sender][0] == firstid ) {
-			tokenreceived 	= sub(sub(sub(s.amount, affiliateandfee), maxcashback), s.amountbalance) ;	
-		} else { 
-            tokenreceived 	= sub(sub(s.amount, affiliateandfee), s.amountbalance) ;
+	/*if (keccak256(abi.encodePacked(u.cashbackcode)) == keccak256(abi.encodePacked("0x000000000000000")) && _idaddress[msg.sender][0] == firstid ) {
+	     tokenreceived 		= sub(sub(sub(s.amount, affiliateandfee), maxcashback), s.amountbalance) ;	
+	} else { 
+            tokenreceived 		= sub(sub(s.amount, affiliateandfee), s.amountbalance) ;
         } */
 
 
         tokenreceived = keccak256(abi.encodePacked(u.cashbackcode)) == keccak256(abi.encodePacked("0x000000000000000")) && _idaddress[msg.sender][0] == firstid 
         ? sub(sub(sub(s.amount, affiliateandfee), maxcashback), s.amountbalance) : sub(sub(s.amount, affiliateandfee), s.amountbalance);
 
-		s.percentagereceive 	        = div(mul(tokenreceived, _twenty), s.amount) ; 	
-		s.tokenreceive 			        = tokenreceived; 
+	s.percentagereceive 	        = div(mul(tokenreceived, _twenty), s.amount) ; 	
+	s.tokenreceive 			= tokenreceived; 
 
         _withdrawPaid(TokenAddress, hold_id, TokenPrice); 
     }
@@ -1492,12 +1492,12 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         Tokenlist storage t             = _tokenlist[s.tokenaddress];
         Stat storage w                  = _stat[s.tokenaddress][msg.sender]; 
 
-        address dappsAddress             = address(this);
+        address dappsAddress            = address(this);
 
         ERC20Interface token = ERC20Interface(TokenAddress);        
         require(token.balanceOf(dappsAddress) > sub(s.payment_queue,1));
 
-		token.transfer(s.user, s.payment_queue);
+	token.transfer(s.user, s.payment_queue);
         /// ----------------------------------------------------------
 
         s.lastwithdraw                  = s.payment_queue;
@@ -1509,8 +1509,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         t.totaltx_unlock++; 
 
         uint256 bonusparameterbefore    = w.bonusparameter;
-        w.lifetimepayments 	            = add(w.lifetimepayments, s.lastwithdraw);
-        w.bonusparameter 	            = sub(w.bonusparameter, s.lastwithdraw);
+        w.lifetimepayments 	        = add(w.lifetimepayments, s.lastwithdraw);
+        w.bonusparameter 	        = sub(w.bonusparameter, s.lastwithdraw);
         w.depositparameter              = sub(w.depositparameter, s.lastwithdraw);
         w.unix_lastwithdraw             = s.lasttime;
         w.tx_withdraw++;               
@@ -1539,8 +1539,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
                 t.activeuser--; 
                 t.totaluser--;
             } else {
-                w.depositparameter              = sub(w.depositparameter, affliateandfee);
-                w.bonusparameter                = sub(w.bonusparameter, affliateandfee);
+                w.depositparameter          = sub(w.depositparameter, affliateandfee);
+                w.bonusparameter            = sub(w.bonusparameter, affliateandfee);
             }
         }
 
@@ -1598,7 +1598,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
         /// Sync Real Balance  
         ERC20Interface token        = ERC20Interface(TokenAddress);     
-		uint256 syncbalance         = token.balanceOf(dappsAddress);
+	uint256 syncbalance         = token.balanceOf(dappsAddress);
         x.tokenbalance_sync         = syncbalance; 
         
         _id_withdrawhistory[msg.sender].push(c_tx_withdrawhistory); 
@@ -1641,7 +1641,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             t.totaltx_affiliate++; 
             
             /// Update Struct - Stat
-            w.affiliatepayments          = add(w.affiliatepayments,w.affiliatevault);          
+            w.affiliatepayments         = add(w.affiliatepayments,w.affiliatevault);          
             w.tx_affiliatewithdraw++;                                                           
 
             // Event
@@ -1709,7 +1709,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             token.transfer(c_deployer, w.noteligible_balance);
 
             /// Update Struct - Stat
-            w.noteligible_paid           = add(w.noteligible_paid,w.noteligible_balance);        
+            w.noteligible_paid          = add(w.noteligible_paid,w.noteligible_balance);        
             w.tx_noteligible++;                                                                     
         }
 
@@ -1913,8 +1913,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             require(_PercentPermonth < 13);
 
             
-            uint256 _HodlingTime 			= mul(div(72, _PercentPermonth), 30);
-            uint256 HodlTime 				= _HodlingTime * 1 days;
+            uint256 _HodlingTime 	    = mul(div(72, _PercentPermonth), 30);
+            uint256 HodlTime 		    = _HodlingTime * 1 days;
 
             Tokenlist storage t             = _tokenlist[TokenAddress];
 

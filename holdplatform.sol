@@ -323,12 +323,12 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         _deployer                                           = msg.sender;                   
         User storage u                                      = _user[_deployer];
     //------------------------------------------------------------------------------------
-		_id						                            = 1;                            /// ID number 1 is the deployer's ID.                           
+	_id						    = 1;                            /// ID number 1 is the deployer's ID.                           
         _holdstatus_bycashbackcode["0x000000000000000"]     = true;                         /// The deployer's cashback code has been held.
         _readdata                                           = true;                         /// The deployer can read their own account data.                             
         _idnumber[1]                                        = _deployer;                    /// ID number 1 is the deployer's ID.                                                        
         _searchaddress_bycashbackcode["0x000000000000000"]  = _deployer;                    /// The cashback code 0x000000000000000 belongs to the deployer
-        u.useraddress                                       = _deployer;			        /// Deployer 0x Address
+        u.useraddress                                       = _deployer;		    /// Deployer 0x Address
         u.cashbackcode                                      = "0x000000000000000";          /// Default Cashbackcode for deployer
         u.affiliateid                                       = "0x000000000000000";          /// The deployer affiliates with themselves.
         u.status                                            = true;                         /// Is the deployer automatically a user? TRUE.
@@ -361,46 +361,46 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
     bool            private _readdata;                      // [07] FALSE/TRUE status indicating whether the deployer can read their own account data.
     bool            private _gas_optimization;              // [08] FALSE/TRUE status indicating whether gas optimization is enabled in the system.
     bool            private _testnet_close;                 // [09] FALSE/TRUE status indicating that the testnet system has been closed (30 days).
-    address[]                                                       private _contractlist;		            // [10] Contains contract addresses that have been added by the deployer.
-    mapping(address user            => uint256[] HoldId ) 	        private _idaddress;		                // [11]	Hold ID number of each address (all data).
-    mapping(address user            => uint256[] Bonushistory ) 	private _id_bonushistory;		        // [12] Bonushistiry ID number of each address (all data).
-    mapping(address user            => uint256[] Withdrawhistory )  private _id_withdrawhistory;            // [13]	Withdrawhistory ID number of each address (all data).
-	mapping(address user            => address[] team) 	            private _afflist;		                // [14] All 0x referral addresses registered with the cashback code.
-    mapping(uint256 serial          => address user ) 	            private _idnumber;	                    // [15] The serial number of the 0x address when registering in the system.
-    mapping(string cashbackCode     => bool isHold) 		        private _holdstatus_bycashbackcode;     // [16] Status FALSE/TRUE indicating whether a cashback code has been held.
-    mapping(string cashbackCode     => address user )               private _searchaddress_bycashbackcode;  // [17] Searching for a 0x address based on the cashback code.
-    mapping(address user            => uint256[] unixtime) 	        private  _disclaimer;		            // [18]	User must sign the disclaimer, and it must be recorded.
+    address[]                                                       private _contractlist;		        // [10] Contains contract addresses that have been added by the deployer.
+    mapping(address user            => uint256[] HoldId ) 	    private _idaddress;		                // [11]	Hold ID number of each address (all data).
+    mapping(address user            => uint256[] Bonushistory )     private _id_bonushistory;		        // [12] Bonushistiry ID number of each address (all data).
+    mapping(address user            => uint256[] Withdrawhistory )  private _id_withdrawhistory;                // [13]	Withdrawhistory ID number of each address (all data).
+    mapping(address user            => address[] team) 	            private _afflist;		                // [14] All 0x referral addresses registered with the cashback code.
+    mapping(uint256 serial          => address user ) 	            private _idnumber;	                        // [15] The serial number of the 0x address when registering in the system.
+    mapping(string cashbackCode     => bool isHold) 		    private _holdstatus_bycashbackcode;         // [16] Status FALSE/TRUE indicating whether a cashback code has been held.
+    mapping(string cashbackCode     => address user )               private _searchaddress_bycashbackcode;      // [17] Searching for a 0x address based on the cashback code.
+    mapping(address user            => uint256[] unixtime) 	    private  _disclaimer;		        // [18]	User must sign the disclaimer, and it must be recorded.
 
-    mapping(uint256 holdId          => Safe) 	                                    private _safes; 		                // [S] User data	
-    mapping(address tokenDetail     => Tokenlist) 	                                private _tokenlist; 	                // [T] Token data
-    mapping(address userDetail      => User) 	                                    private _user; 	                        // [U] User data
-    mapping(uint256 bonusId         => Bonushistory)                                private _bonushistory; 	                // [V] Bonushistory data
+    mapping(uint256 holdId          => Safe) 	                                    private _safes; 		            // [S] User data	
+    mapping(address tokenDetail     => Tokenlist) 	                            private _tokenlist; 	            // [T] Token data
+    mapping(address userDetail      => User) 	                                    private _user; 	                    // [U] User data
+    mapping(uint256 bonusId         => Bonushistory)                                private _bonushistory; 	            // [V] Bonushistory data
     mapping(address tokenaddress    => mapping (address useraddress => Stat))       private _stat;                          // [W] Stat data
     mapping(uint256 withdrawId      => Withdrawhistory)                             private _withdrawhistory; 	            // [X] Transaction data
 
 
         struct Safe {
-            uint256 id;						        /// S00 -- > Hold ID
+            uint256 id;				    /// S00 -- > Hold ID
             uint256 blocknumber;                    /// S01 -- > The block number at the time the transaction was made.
-            string  tokensymbol;			        /// S02 -- > A symbol that represents the ticker of a token.
-            uint256 tokendecimal; 			        /// S03 -- > The number of decimals for the token, usually 8 (00000000) or 18 (000000000000000000).
-            uint256 starttime;				        /// S04 -- > Start time ( Based On Unix Time ).
-            uint256 endtime;				        /// S05 -- > The Expiration Of A Hold Platform Based On Unix Time.
-            uint256 holdingtime_inseconds;          /// S06 -- > Duration of holding on the platform in seconds.
-            uint256 percentage; 			        /// S07 -- > The percentage of tokens that are unlocked every month ( Default 3% )
-            uint256 amount;					        /// S08 -- > The total amount of tokens deposited for holding.
+            string  tokensymbol;	            /// S02 -- > A symbol that represents the ticker of a token.
+            uint256 tokendecimal; 	            /// S03 -- > The number of decimals for the token, usually 8 (00000000) or 18 (000000000000000000).
+            uint256 starttime;		            /// S04 -- > Start time ( Based On Unix Time ).
+            uint256 endtime;		            /// S05 -- > The Expiration Of A Hold Platform Based On Unix Time.
+            uint256 holdingtime_inseconds;          /// S06 -- > Duration of holding on the platform in seconds. 
+            uint256 percentage; 	            /// S07 -- > The percentage of tokens that are unlocked every month ( Default 3% )
+            uint256 amount;			    /// S08 -- > The total amount of tokens deposited for holding.
             uint256 usdvalue_deposit;               /// S09 -- > The number of tokens multiplied by the token price at the time of deposit.
-            uint256 amountbalance; 			        /// S10 -- > 88% from Contribution / 72% Without Cashback.
-            uint256 cashbackbalance; 		        /// S11 -- > 16% from Contribution / 0% Without Cashback.
-            bool 	cashbackstatus; 		        /// S12 -- > Cashback Status
+            uint256 amountbalance; 	            /// S10 -- > 88% from Contribution / 72% Without Cashback.
+            uint256 cashbackbalance; 		    /// S11 -- > 16% from Contribution / 0% Without Cashback.
+            bool 	cashbackstatus;             /// S12 -- > Cashback Status
             uint256 tokenprice_start;               /// S13 -- > The token price at the time of holding.
             uint256 usdvalue_withdraw;              /// S14 -- > Total accumulated withdrawals in USD.
-            address user;					        /// S15 -- > The ETH address you are using.
-            address tokenaddress;			        /// S16 -- > The Token Contract Address That You Are Using.
-            uint256 percentagereceive; 		        /// S17 -- > The Percentage You Have Received.
-            uint256 tokenreceive; 			        /// S18 -- > The Number Of Tokens You Have Received.
+            address user;			    /// S15 -- > The ETH address you are using.
+            address tokenaddress;		    /// S16 -- > The Token Contract Address That You Are Using.
+            uint256 percentagereceive; 		    /// S17 -- > The Percentage You Have Received.
+            uint256 tokenreceive; 	            /// S18 -- > The Number Of Tokens You Have Received.
             string  affiliateid;                    /// S19 -- > It is 0x + a 15-digit random affiliate ID generated by the smart contract.
-            string  cashbackcode; 			        /// S20 -- > This is the cashback code you used when registering (your sponsor).
+            string  cashbackcode; 	            /// S20 -- > This is the cashback code you used when registering (your sponsor).
             uint256 bonusparameter;                 /// S21 -- > It is the parameter used to determine the affiliate bonus based on the sponsor's deposit.
             uint256 oldcontribution;                /// S22 -- > The total amount of all previous user deposits.
             uint256 newcontribution;                /// S23 -- > The latest deposit amount from the user.
@@ -411,8 +411,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             uint256 percentage_affiliate;           /// S28 -- > The percentage earned by the affiliate.
             uint256 percentage_not_eligible;        /// S29 -- > The percentage that is not eligible because the sponsor did not meet the criteria.        
             uint256 fee;                            /// S30 -- > A 2% fee is given to the deployer who created the hold platform.
-            uint256 lasttime; 				        /// S31 -- > The last time you made a withdrawal, the data displayed is in UNIX format.
-            uint256 lastwithdraw; 			        /// S32 -- > The amount of the last withdrawal you made.
+            uint256 lasttime; 			    /// S31 -- > The last time you made a withdrawal, the data displayed is in UNIX format.
+            uint256 lastwithdraw; 		    /// S32 -- > The amount of the last withdrawal you made.
             uint256 tokenprice_end;                 /// S33 -- > The token price when the contract ended and the last withdrawal was made.
             uint256 tx_withdraw;                    /// S34 -- > The number of withdrawal transactions for that hold ID.
             uint256 payment_queue;                  /// S35 -- > The amount of payment ready to be transferred upon withdrawal.
@@ -447,14 +447,14 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         }
 
         struct User {
-            address useraddress;		            /// U00 -- > Searching for data based on the selected address.	
-            string  cashbackcode;	                /// U01 -- > This is the cashback code you used when registering (your sponsor).		
+            address useraddress;		    /// U00 -- > Searching for data based on the selected address.	
+            string  cashbackcode;	            /// U01 -- > This is the cashback code you used when registering (your sponsor).		
             string  affiliateid;                    /// U02 -- > It is 0x + a 15-digit random affiliate ID generated by the smart contract.	
             bool    status;                         /// U03 -- > Status (true) if the user has held at least once.	
             uint256 unixregister;                   /// U04 -- > User registration date / cashback code submission (based on UNIX time).	
             uint256 firsttimebuybitcoin;            /// U05 -- > When did the user first purchase Bitcoin?	
             uint256 totaltransaction;               /// U06 -- > The number of deposit transactions made by the user.	
-            uint256 totalaffiliate;	                /// U07 -- > The number of users who registered with your cashback code.	
+            uint256 totalaffiliate;	            /// U07 -- > The number of users who registered with your cashback code.	
             bool    sign;                           /// U08 -- > The status of the latest disclaimer signing. It will change to false with each hold.	
             uint256 usddeposit;                     /// U09 -- > Total deposit in all tokens if converted to USD.
             uint256 usdaffiliate;                   /// U10 -- > Total affiliate earnings in all tokens, if converted to USD.             
@@ -479,7 +479,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             string tokensymbol;                     /// V14 -- > A symbol that represents the ticker of a token.	
             uint256 tokendecimal;                   /// V15 -- > The number of decimals for the token, usually 8 (00000000) or 18 (000000000000000000).
             uint256 tokenprice;                     /// V16 -- > The token price when the affiliate bonus enters the system.
-            uint256 percentage; 	                /// V17 -- > The percentage of tokens unlocked each month for the referral.
+            uint256 percentage; 	            /// V17 -- > The percentage of tokens unlocked each month for the referral.
             uint256 oldcontribution;                /// V18 -- > The total amount of all previous user deposits.	
             uint256 amount;                         /// V19 -- > The latest deposit amount from the user.
             uint256 allcontribution;                /// V20 -- > Adding up all the old and new total deposits.	
@@ -497,7 +497,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             bool activeuser;                        /// W00 -- > The user's status in the system, have they held or not?	
             address tokenaddress;                   /// W01 -- > The currently selected token address.	
             address useraddress;                    /// W02 -- > The user's address.
-            string  tokensymbol;			        /// W03 -- > A symbol that represents the ticker of a token.	 	
+            string  tokensymbol;	            /// W03 -- > A symbol that represents the ticker of a token.	 	
             uint256 tokendecimal;                   /// W04 -- > The number of decimals for the token, usually 8 (00000000) or 18 (000000000000000000).
             uint256 tokenprice;                     /// W05 -- > The price of the token when the user holds.
             uint256 affiliatevault;                 /// W06 -- > The user's affiliate bonus balance that can be withdrawn.	
@@ -817,17 +817,17 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 	
 
     event onSave            (address indexed from, address indexed tokenaddress, uint256 percent, string tokensymbol, uint256 maxcontribution); 
-    event onCashbackCode	(address indexed from, string cashbackcode, uint256 year);	
+    event onCashbackCode    (address indexed from, string cashbackcode, uint256 year);	
 
     event onSignDisclaimer  (address indexed from, string disclaimer); 	
-    event onHoldplatform	(address indexed from, address indexed tokenaddress, uint256 holdid, string tokensymbol, uint256 amount, uint256 tokenprice, uint256 usdvalue);     
+    event onHoldplatform    (address indexed from, address indexed tokenaddress, uint256 holdid, string tokensymbol, uint256 amount, uint256 tokenprice, uint256 usdvalue);     
     event onWithdraw	    (address indexed from, address indexed tokenaddress, uint256 holdid, string tokensymbol, uint256 amount, uint256 tokenprice, uint256 usdvalue);  
     event onAffiliate	    (address indexed from, address indexed tokenaddress, string tokensymbol, uint256 amount, uint256 tokenprice, uint256 usdvalue); 
 
-    event onLoad	        (address indexed from);	
-    event onGasOptimization	(address indexed from);	
+    event onLoad	    (address indexed from);	
+    event onGasOptimization (address indexed from);	
     event onTryTestnet	    (address indexed from, uint256 lenght);
-    event onTestnetClose	(address indexed from);
+    event onTestnetClose    (address indexed from);
     
     // -----------------------------------------
     // ✦ Custom Error
@@ -1218,7 +1218,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         }
 
         if ( s.not_eligible != 0 ){	
-		s.percentage_not_eligible	        = div(mul(s.not_eligible, _twenty), s.amount) ; 
+		s.percentage_not_eligible	    = div(mul(s.not_eligible, _twenty), s.amount) ; 
         }		
 
          /* There are no changes to the data, so the data remains default

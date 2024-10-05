@@ -592,7 +592,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
     * @notice . function to get the most accurate estimate of the amount of tokens ready to be withdrawn.
     */
 
-	function GetAvailabletowithdraw(uint256 hold_id) public view returns (uint256 timeframe, uint256 available ) {
+     function GetAvailabletowithdraw(uint256 hold_id) public view returns (uint256 timeframe, uint256 available ) {
 
         Safe storage s = _safes[hold_id];
 
@@ -973,7 +973,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
     */
 
 
-	function Holdplatform(address TokenAddress, uint256 amount, uint256 TokenPrice ) public nonReentrant {
+     function Holdplatform(address TokenAddress, uint256 amount, uint256 TokenPrice ) public nonReentrant {
 
         /* Deposit - only msg.sender == tx.origin is allowed, 
         this is to prevent a smart contract or bot from depositing into the Holdplatform
@@ -986,13 +986,13 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
         require(msg.sender == tx.origin);   
         _holdplatform1(TokenAddress, amount, TokenPrice);
-	}
+     }
 
     /** 
     * @dev Holdplatform - Part 1
     */
 
-	function _holdplatform1(address TokenAddress, uint256 amount, uint256 TokenPrice ) private {
+     function _holdplatform1(address TokenAddress, uint256 amount, uint256 TokenPrice ) private {
 
         require(_launch != 0);   
 
@@ -1088,7 +1088,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         s.unix_signdisclaimer               = _disclaimer[msg.sender][length_hold];
 
         _holdplatform2(TokenAddress, OldContribution, amount, ReferrerAddress, BonusParameter, _count);
-	}
+     }
 
     /** 
     * @dev Holdplatform - Part 2
@@ -1178,12 +1178,12 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
         if (keccak256(abi.encodePacked(u.cashbackcode)) == keccak256(abi.encodePacked("0x000000000000000")) && !u.status || struct_id == 1) {
 
-            s.not_eligible                  = add(s.not_eligible, AvailableCashback);
+            s.not_eligible                  			     = add(s.not_eligible, AvailableCashback);
 
             _stat[TokenAddress][c_deployer].stat_noteligible         = add(_stat[TokenAddress][c_deployer].stat_noteligible, AvailableCashback);
             _stat[TokenAddress][c_deployer].noteligible_balance      = add(_stat[TokenAddress][c_deployer].noteligible_balance, AvailableCashback);
 
-            AvailableCashback               = 0;
+            AvailableCashback               			     = 0;
 
         } 
 
@@ -1214,11 +1214,11 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         s.usdvalue_deposit                  = mul(s.amount,s.tokenprice_start);
 
         if ( s.affiliatebonus != 0 ){	
-	s.percentage_affiliate 	            = div(mul(s.affiliatebonus, _twenty), s.amount) ; 
+		s.percentage_affiliate 	    = div(mul(s.affiliatebonus, _twenty), s.amount) ; 
         }
 
         if ( s.not_eligible != 0 ){	
-	s.percentage_not_eligible	    = div(mul(s.not_eligible, _twenty), s.amount) ; 
+		s.percentage_not_eligible   = div(mul(s.not_eligible, _twenty), s.amount) ; 
         }		
 
          /* There are no changes to the data, so the data remains default
@@ -1231,9 +1231,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         // Create Event - onHoldplatform
         emit onHoldplatform(msg.sender, s.tokenaddress, s.id, s.tokensymbol, s.amount, s.tokenprice_start, s.usdvalue_deposit);
 
-        u.usddeposit        = add(u.usddeposit, s.usdvalue_deposit);
+        u.usddeposit        		     = add(u.usddeposit, s.usdvalue_deposit);
+        u.sign                               = false;
 
-        u.sign              = false;
         _syncTVL(s.tokenaddress,s.tokenprice_start);
 
         /// Additional - High gas fee!
@@ -1249,7 +1249,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
     function _history1(address TokenAddress, uint256 struct_id, uint256 tokenbalance, uint256 tokenbalance_sync) private {
 
-            Safe        storage s               = _safes[struct_id];
+        Safe storage s               		= _safes[struct_id];
 
         if ( s.affiliatebonus != 0 ) {
 
@@ -1302,7 +1302,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
     * @dev If gas optimization is false, then all bonus (deployer) records will be recorded in the smart contract
     */
 
-    function _history2(address TokenAddress, uint256 struct_id, uint256 tokenbalance, uint256 tokenbalance_sync) private {
+  function _history2(address TokenAddress, uint256 struct_id, uint256 tokenbalance, uint256 tokenbalance_sync) private {
 
         Safe storage s                      = _safes[struct_id];
         address c_deployer                  = _deployer;
@@ -1381,9 +1381,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
         // A bot can never withdraw because the system rejects deposits from a bot.
         require(s.user == msg.sender);  
-		require(s.tokenaddress == TokenAddress);
+	require(s.tokenaddress == TokenAddress);
 		
-		if (s.amountbalance == 0) { 
+	if (s.amountbalance == 0) { 
             revert EmptyBalance(); 
         } else { 
             Stat storage w              = _stat[s.tokenaddress][msg.sender]; 
@@ -1421,18 +1421,18 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
     function _partialWithdraw(address TokenAddress, uint256 hold_id, uint256 TokenPrice) private {
 
-        Safe storage s              = _safes[hold_id];
+        Safe storage s              	= _safes[hold_id];
 
         // Calculate the difference (in seconds) between the time of the last withdrawal and the current time
-        s.timeframe  			    = sub(block.timestamp, s.lasttime);	
+        s.timeframe  	            	= sub(block.timestamp, s.lasttime);	
 
         // Calculate the total number of tokens unlocked within one month ( 30 days - 2592000 seconds )
-        uint256 onemonth            = div(mul(s.amount, s.percentage), 100 );
-        uint256 CalculateWithdraw   = div(mul(onemonth, s.timeframe),2592000);
+        uint256 onemonth            	= div(mul(s.amount, s.percentage), 100 );
+        uint256 CalculateWithdraw   	= div(mul(onemonth, s.timeframe),2592000);
         
 	/// S.amount * s.percentage / 100 * timeframe / seconds30days	
 		                         
-	uint256 MaxWithdraw 		= div(s.amount, 10);
+	uint256 MaxWithdraw 	    	= div(s.amount, 10);
 
         uint256 MaxAccumulation;
         uint256 payment_queue;
@@ -1522,25 +1522,25 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         w.mybalance                     = sub(w.mybalance, s.lastwithdraw);
 
         if (s.amountbalance == 0 ) {
-            s.tokenprice_end                = TokenPrice;
+            s.tokenprice_end            = TokenPrice;
 
             //// The previous 12% was given so that the bonus parameters were 100% intact without deductions from fees and referral bonuses
-            uint256 affliateandfee          = div(mul(s.amount, 12), 100 );
+            uint256 affliateandfee      = div(mul(s.amount, 12), 100 );
 
             if( !s.cashbackstatus) {
-                affliateandfee              = div(mul(s.amount, 28), 100 );
+                affliateandfee          = div(mul(s.amount, 28), 100 );
             }
 
             if (w.mybalance == 0) {
-                w.depositparameter          = 0;
-                w.bonusparameter            = 0;
-                w.activeuser                = false;
+                w.depositparameter      = 0;
+                w.bonusparameter        = 0;
+                w.activeuser            = false;
 
                 t.activeuser--; 
                 t.totaluser--;
             } else {
-                w.depositparameter          = sub(w.depositparameter, affliateandfee);
-                w.bonusparameter            = sub(w.bonusparameter, affliateandfee);
+                w.depositparameter      = sub(w.depositparameter, affliateandfee);
+                w.bonusparameter        = sub(w.bonusparameter, affliateandfee);
             }
         }
 
@@ -1561,45 +1561,45 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
     function _withdrawhistory_token(address TokenAddress, uint256 hold_id, uint256 tokenbalancebefore, uint256 bonusparameterbefore,uint256 TokenPrice) private {
 
-        Safe storage s              = _safes[hold_id];
-        Tokenlist storage t         = _tokenlist[s.tokenaddress];
-        Stat storage w              = _stat[s.tokenaddress][msg.sender]; 
+        Safe storage s              	= _safes[hold_id];
+        Tokenlist storage t         	= _tokenlist[s.tokenaddress];
+        Stat storage w              	= _stat[s.tokenaddress][msg.sender]; 
 
-        address dappsAddress        = address(this);
+        address dappsAddress        	= address(this);
 
         /// Update Struct - Withdrawhistory 
         _tx_withdrawhistory++;
 
-        uint256 c_tx_withdrawhistory= _tx_withdrawhistory;
+        uint256 c_tx_withdrawhistory	= _tx_withdrawhistory;
 
-        Withdrawhistory storage x   = _withdrawhistory[c_tx_withdrawhistory];
+        Withdrawhistory storage x   	= _withdrawhistory[c_tx_withdrawhistory];
 
-        x.id                        = c_tx_withdrawhistory;
-        x.holdid                    = s.id;	 
-        x.blocknumber               = block.number;        
-        x.transactiontype           = "Withdraw Token";       
-        x.from                      = dappsAddress;                
-        x.to                        = msg.sender;                   
-        x.tokenaddress              = TokenAddress;                  
-        x.tokensymbol               = t.tokensymbol;             
-        x.tokendecimal              = t.tokendecimal;               
-        x.amount                    = s.lastwithdraw;             
-        x.unixtime                  = block.timestamp;              
-        x.balancebefore             = add(s.amountbalance,s.lastwithdraw);             
-        x.balanceafter              = s.amountbalance;                             
-        x.tokenbalance_before       = tokenbalancebefore;
-        x.tokenbalance_after        = t.tokenbalance;
-        x.bonusparameter_before     = bonusparameterbefore;
-        x.bonusparameter_after      = w.bonusparameter;
-        x.timeframe                 = s.timeframe; 
-        x.tokenprice                = TokenPrice; 
-        x.usdvalue                  = mul(s.lastwithdraw,TokenPrice );
-        x.code                      = 1;
+        x.id                        	= c_tx_withdrawhistory;
+        x.holdid                    	= s.id;	 
+        x.blocknumber               	= block.number;        
+        x.transactiontype           	= "Withdraw Token";       
+        x.from                      	= dappsAddress;                
+        x.to                        	= msg.sender;                   
+        x.tokenaddress              	= TokenAddress;                  
+        x.tokensymbol               	= t.tokensymbol;             
+        x.tokendecimal              	= t.tokendecimal;               
+        x.amount                    	= s.lastwithdraw;             
+        x.unixtime                  	= block.timestamp;              
+        x.balancebefore             	= add(s.amountbalance,s.lastwithdraw);             
+        x.balanceafter              	= s.amountbalance;                             
+        x.tokenbalance_before       	= tokenbalancebefore;
+        x.tokenbalance_after        	= t.tokenbalance;
+        x.bonusparameter_before     	= bonusparameterbefore;
+        x.bonusparameter_after      	= w.bonusparameter;
+        x.timeframe                 	= s.timeframe; 
+        x.tokenprice                	= TokenPrice; 
+        x.usdvalue                  	= mul(s.lastwithdraw,TokenPrice );
+        x.code                      	= 1;
 
         /// Sync Real Balance  
-        ERC20Interface token        = ERC20Interface(TokenAddress);     
-	uint256 syncbalance         = token.balanceOf(dappsAddress);
-        x.tokenbalance_sync         = syncbalance; 
+        ERC20Interface token        	= ERC20Interface(TokenAddress);     
+	uint256 syncbalance         	= token.balanceOf(dappsAddress);
+        x.tokenbalance_sync         	= syncbalance; 
         
         _id_withdrawhistory[msg.sender].push(c_tx_withdrawhistory); 
     }
@@ -1626,7 +1626,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
             require(w.affiliatevault != 0 ); 
 
-            address dappsAddress     = address(this);                
+            address dappsAddress     	    = address(this);                
 
             /// Send Affiliate Balances
             ERC20Interface token = ERC20Interface(TokenAddress);
@@ -1634,9 +1634,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             token.transfer(msg.sender, w.affiliatevault);	                                   
 
             /// Update Struct - Tokenlist
-            uint256 tokenbalancebefore  = t.tokenbalance;
-            t.totalaffiliatepayments    = add(t.totalaffiliatepayments,w.affiliatevault);           
-            t.tokenbalance              = sub(t.tokenbalance,w.affiliatevault);  
+            uint256 tokenbalancebefore      = t.tokenbalance;
+            t.totalaffiliatepayments        = add(t.totalaffiliatepayments,w.affiliatevault);           
+            t.tokenbalance                  = sub(t.tokenbalance,w.affiliatevault);  
 
             t.totaltx_affiliate++; 
             
@@ -1997,7 +1997,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
 	function mul(uint256 a, uint256 b) internal pure returns (uint256) {
 		if (a == 0) {
-			return 0;
+		   return 0;
 		}
 		uint256 c = a * b; 
 		require(c / a == b); 

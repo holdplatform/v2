@@ -29,7 +29,7 @@ import "./interfaces/ERC20Interface.sol";
     // -----------------------------------------
     // ✦✦✦ Testnet 2 - Holdplatform V2 
     // -----------------------------------------
-    // Mon Oct-28-2024 09:12:11 AM +UTC
+    // Mon Oct-28-2024 11:32:23 AM +UTC
 
 
     // -----------------------------------------
@@ -2047,7 +2047,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             Tokenlist storage t             = _tokenlist[TokenAddress];
 
             // Max Contribution cannot be updated to be smaller than the existing one
-            require(_maxcontribution > sub(t.max_contribution, 1));
+            require(_maxcontribution > t.max_contribution);
             // ⫸ This function is not used because it exceeds 24,576 bytes.
             // (Message-26) New max contribution must exceed current limit
 
@@ -2071,7 +2071,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
                  
                 t.percentpermonth           = _PercentPermonth;
                 t.holdingtime_inseconds     = HodlTime;
-                t.max_contribution          = _maxcontribution;
+                t.max_contribution          = sub(_maxcontribution,1);
                     
             }
 

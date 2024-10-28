@@ -5,6 +5,10 @@ pragma solidity 0.8.26;
 import "./openzeppelin/security/ReentrancyGuard.sol";
 import "./interfaces/ERC20Interface.sol";
 
+/* import "./openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol"; 
+    ⫸ This function is not used because it exceeds 24,576 bytes.
+*/
+
 
 /**
 
@@ -23,9 +27,9 @@ import "./interfaces/ERC20Interface.sol";
 
 
     // -----------------------------------------
-    // ✦✦✦ Testnet - Holdplatform V2 
+    // ✦✦✦ Testnet 2 - Holdplatform V2 
     // -----------------------------------------
-    // Mon Sep 02 2024 17:17:14 GMT+0000
+    // Mon Oct-28-2024 09:12:11 AM +UTC
 
 
     // -----------------------------------------
@@ -313,6 +317,9 @@ import "./interfaces/ERC20Interface.sol";
 
 contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
+    /* using SafeERC20 for IERC20; 
+       ⫸ This function is not used because it exceeds 24,576 bytes.
+    */
 
     // ------------------------------------
     // ✦ Constructor
@@ -323,12 +330,12 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         _deployer                                           = msg.sender;                   
         User storage u                                      = _user[_deployer];
     //------------------------------------------------------------------------------------
-	_id						    = 1;                            /// ID number 1 is the deployer's ID.                           
+		_id						                            = 1;                            /// ID number 1 is the deployer's ID.                           
         _holdstatus_bycashbackcode["0x000000000000000"]     = true;                         /// The deployer's cashback code has been held.
         _readdata                                           = true;                         /// The deployer can read their own account data.                             
         _idnumber[1]                                        = _deployer;                    /// ID number 1 is the deployer's ID.                                                        
         _searchaddress_bycashbackcode["0x000000000000000"]  = _deployer;                    /// The cashback code 0x000000000000000 belongs to the deployer
-        u.useraddress                                       = _deployer;		    /// Deployer 0x Address
+        u.useraddress                                       = _deployer;			        /// Deployer 0x Address
         u.cashbackcode                                      = "0x000000000000000";          /// Default Cashbackcode for deployer
         u.affiliateid                                       = "0x000000000000000";          /// The deployer affiliates with themselves.
         u.status                                            = true;                         /// Is the deployer automatically a user? TRUE.
@@ -361,46 +368,46 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
     bool            private _readdata;                      // [07] FALSE/TRUE status indicating whether the deployer can read their own account data.
     bool            private _gas_optimization;              // [08] FALSE/TRUE status indicating whether gas optimization is enabled in the system.
     bool            private _testnet_close;                 // [09] FALSE/TRUE status indicating that the testnet system has been closed (30 days).
-    address[]                                                       private _contractlist;		        // [10] Contains contract addresses that have been added by the deployer.
-    mapping(address user            => uint256[] HoldId ) 	    private _idaddress;		                // [11]	Hold ID number of each address (all data).
-    mapping(address user            => uint256[] Bonushistory )     private _id_bonushistory;		        // [12] Bonushistiry ID number of each address (all data).
-    mapping(address user            => uint256[] Withdrawhistory )  private _id_withdrawhistory;                // [13]	Withdrawhistory ID number of each address (all data).
-    mapping(address user            => address[] team) 	            private _afflist;		                // [14] All 0x referral addresses registered with the cashback code.
-    mapping(uint256 serial          => address user ) 	            private _idnumber;	                        // [15] The serial number of the 0x address when registering in the system.
-    mapping(string cashbackCode     => bool isHold) 		    private _holdstatus_bycashbackcode;         // [16] Status FALSE/TRUE indicating whether a cashback code has been held.
-    mapping(string cashbackCode     => address user )               private _searchaddress_bycashbackcode;      // [17] Searching for a 0x address based on the cashback code.
-    mapping(address user            => uint256[] unixtime) 	    private  _disclaimer;		        // [18]	User must sign the disclaimer, and it must be recorded.
+    address[]                                                       private _contractlist;		            // [10] Contains contract addresses that have been added by the deployer.
+    mapping(address user            => uint256[] HoldId ) 	        private _idaddress;		                // [11]	Hold ID number of each address (all data).
+    mapping(address user            => uint256[] Bonushistory ) 	private _id_bonushistory;		        // [12] Bonushistiry ID number of each address (all data).
+    mapping(address user            => uint256[] Withdrawhistory )  private _id_withdrawhistory;            // [13]	Withdrawhistory ID number of each address (all data).
+	mapping(address user            => address[] team) 	            private _afflist;		                // [14] All 0x referral addresses registered with the cashback code.
+    mapping(uint256 serial          => address user ) 	            private _idnumber;	                    // [15] The serial number of the 0x address when registering in the system.
+    mapping(string cashbackCode     => bool isHold) 		        private _holdstatus_bycashbackcode;     // [16] Status FALSE/TRUE indicating whether a cashback code has been held.
+    mapping(string cashbackCode     => address user )               private _searchaddress_bycashbackcode;  // [17] Searching for a 0x address based on the cashback code.
+    mapping(address user            => uint256[] unixtime) 	        private  _disclaimer;		            // [18]	User must sign the disclaimer, and it must be recorded.
 
-    mapping(uint256 holdId          => Safe) 	                                    private _safes; 		            // [S] User data	
-    mapping(address tokenDetail     => Tokenlist) 	                            private _tokenlist; 	            // [T] Token data
-    mapping(address userDetail      => User) 	                                    private _user; 	                    // [U] User data
-    mapping(uint256 bonusId         => Bonushistory)                                private _bonushistory; 	            // [V] Bonushistory data
+    mapping(uint256 holdId          => Safe) 	                                    private _safes; 		                // [S] User data	
+    mapping(address tokenDetail     => Tokenlist) 	                                private _tokenlist; 	                // [T] Token data
+    mapping(address userDetail      => User) 	                                    private _user; 	                        // [U] User data
+    mapping(uint256 bonusId         => Bonushistory)                                private _bonushistory; 	                // [V] Bonushistory data
     mapping(address tokenaddress    => mapping (address useraddress => Stat))       private _stat;                          // [W] Stat data
     mapping(uint256 withdrawId      => Withdrawhistory)                             private _withdrawhistory; 	            // [X] Transaction data
 
 
         struct Safe {
-            uint256 id;				    /// S00 -- > Hold ID
+            uint256 id;						        /// S00 -- > Hold ID
             uint256 blocknumber;                    /// S01 -- > The block number at the time the transaction was made.
-            string  tokensymbol;	            /// S02 -- > A symbol that represents the ticker of a token.
-            uint256 tokendecimal; 	            /// S03 -- > The number of decimals for the token, usually 8 (00000000) or 18 (000000000000000000).
-            uint256 starttime;		            /// S04 -- > Start time ( Based On Unix Time ).
-            uint256 endtime;		            /// S05 -- > The Expiration Of A Hold Platform Based On Unix Time.
-            uint256 holdingtime_inseconds;          /// S06 -- > Duration of holding on the platform in seconds. 
-            uint256 percentage; 	            /// S07 -- > The percentage of tokens that are unlocked every month ( Default 3% )
-            uint256 amount;			    /// S08 -- > The total amount of tokens deposited for holding.
+            string  tokensymbol;			        /// S02 -- > A symbol that represents the ticker of a token.
+            uint256 tokendecimal; 			        /// S03 -- > The number of decimals for the token, usually 8 (00000000) or 18 (000000000000000000).
+            uint256 starttime;				        /// S04 -- > Start time ( Based On Unix Time ).
+            uint256 endtime;				        /// S05 -- > The Expiration Of A Hold Platform Based On Unix Time.
+            uint256 holdingtime_inseconds;          /// S06 -- > Duration of holding on the platform in seconds.
+            uint256 percentage; 			        /// S07 -- > The percentage of tokens that are unlocked every month ( Default 3% )
+            uint256 amount;					        /// S08 -- > The total amount of tokens deposited for holding.
             uint256 usdvalue_deposit;               /// S09 -- > The number of tokens multiplied by the token price at the time of deposit.
-            uint256 amountbalance; 	            /// S10 -- > 88% from Contribution / 72% Without Cashback.
-            uint256 cashbackbalance; 		    /// S11 -- > 16% from Contribution / 0% Without Cashback.
-            bool 	cashbackstatus;             /// S12 -- > Cashback Status
+            uint256 amountbalance; 			        /// S10 -- > 88% from Contribution / 72% Without Cashback.
+            uint256 cashbackbalance; 		        /// S11 -- > 16% from Contribution / 0% Without Cashback.
+            bool 	cashbackstatus; 		        /// S12 -- > Cashback Status
             uint256 tokenprice_start;               /// S13 -- > The token price at the time of holding.
             uint256 usdvalue_withdraw;              /// S14 -- > Total accumulated withdrawals in USD.
-            address user;			    /// S15 -- > The ETH address you are using.
-            address tokenaddress;		    /// S16 -- > The Token Contract Address That You Are Using.
-            uint256 percentagereceive; 		    /// S17 -- > The Percentage You Have Received.
-            uint256 tokenreceive; 	            /// S18 -- > The Number Of Tokens You Have Received.
+            address user;					        /// S15 -- > The ETH address you are using.
+            address tokenaddress;			        /// S16 -- > The Token Contract Address That You Are Using.
+            uint256 percentagereceive; 		        /// S17 -- > The Percentage You Have Received.
+            uint256 tokenreceive; 			        /// S18 -- > The Number Of Tokens You Have Received.
             string  affiliateid;                    /// S19 -- > It is 0x + a 15-digit random affiliate ID generated by the smart contract.
-            string  cashbackcode; 	            /// S20 -- > This is the cashback code you used when registering (your sponsor).
+            string  cashbackcode; 			        /// S20 -- > This is the cashback code you used when registering (your sponsor).
             uint256 bonusparameter;                 /// S21 -- > It is the parameter used to determine the affiliate bonus based on the sponsor's deposit.
             uint256 oldcontribution;                /// S22 -- > The total amount of all previous user deposits.
             uint256 newcontribution;                /// S23 -- > The latest deposit amount from the user.
@@ -411,8 +418,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             uint256 percentage_affiliate;           /// S28 -- > The percentage earned by the affiliate.
             uint256 percentage_not_eligible;        /// S29 -- > The percentage that is not eligible because the sponsor did not meet the criteria.        
             uint256 fee;                            /// S30 -- > A 2% fee is given to the deployer who created the hold platform.
-            uint256 lasttime; 			    /// S31 -- > The last time you made a withdrawal, the data displayed is in UNIX format.
-            uint256 lastwithdraw; 		    /// S32 -- > The amount of the last withdrawal you made.
+            uint256 lasttime; 				        /// S31 -- > The last time you made a withdrawal, the data displayed is in UNIX format.
+            uint256 lastwithdraw; 			        /// S32 -- > The amount of the last withdrawal you made.
             uint256 tokenprice_end;                 /// S33 -- > The token price when the contract ended and the last withdrawal was made.
             uint256 tx_withdraw;                    /// S34 -- > The number of withdrawal transactions for that hold ID.
             uint256 payment_queue;                  /// S35 -- > The amount of payment ready to be transferred upon withdrawal.
@@ -447,14 +454,14 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         }
 
         struct User {
-            address useraddress;		    /// U00 -- > Searching for data based on the selected address.	
-            string  cashbackcode;	            /// U01 -- > This is the cashback code you used when registering (your sponsor).		
+            address useraddress;		            /// U00 -- > Searching for data based on the selected address.	
+            string  cashbackcode;	                /// U01 -- > This is the cashback code you used when registering (your sponsor).		
             string  affiliateid;                    /// U02 -- > It is 0x + a 15-digit random affiliate ID generated by the smart contract.	
             bool    status;                         /// U03 -- > Status (true) if the user has held at least once.	
             uint256 unixregister;                   /// U04 -- > User registration date / cashback code submission (based on UNIX time).	
             uint256 firsttimebuybitcoin;            /// U05 -- > When did the user first purchase Bitcoin?	
             uint256 totaltransaction;               /// U06 -- > The number of deposit transactions made by the user.	
-            uint256 totalaffiliate;	            /// U07 -- > The number of users who registered with your cashback code.	
+            uint256 totalaffiliate;	                /// U07 -- > The number of users who registered with your cashback code.	
             bool    sign;                           /// U08 -- > The status of the latest disclaimer signing. It will change to false with each hold.	
             uint256 usddeposit;                     /// U09 -- > Total deposit in all tokens if converted to USD.
             uint256 usdaffiliate;                   /// U10 -- > Total affiliate earnings in all tokens, if converted to USD.             
@@ -479,7 +486,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             string tokensymbol;                     /// V14 -- > A symbol that represents the ticker of a token.	
             uint256 tokendecimal;                   /// V15 -- > The number of decimals for the token, usually 8 (00000000) or 18 (000000000000000000).
             uint256 tokenprice;                     /// V16 -- > The token price when the affiliate bonus enters the system.
-            uint256 percentage; 	            /// V17 -- > The percentage of tokens unlocked each month for the referral.
+            uint256 percentage; 	                /// V17 -- > The percentage of tokens unlocked each month for the referral.
             uint256 oldcontribution;                /// V18 -- > The total amount of all previous user deposits.	
             uint256 amount;                         /// V19 -- > The latest deposit amount from the user.
             uint256 allcontribution;                /// V20 -- > Adding up all the old and new total deposits.	
@@ -497,7 +504,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             bool activeuser;                        /// W00 -- > The user's status in the system, have they held or not?	
             address tokenaddress;                   /// W01 -- > The currently selected token address.	
             address useraddress;                    /// W02 -- > The user's address.
-            string  tokensymbol;	            /// W03 -- > A symbol that represents the ticker of a token.	 	
+            string  tokensymbol;			        /// W03 -- > A symbol that represents the ticker of a token.	 	
             uint256 tokendecimal;                   /// W04 -- > The number of decimals for the token, usually 8 (00000000) or 18 (000000000000000000).
             uint256 tokenprice;                     /// W05 -- > The price of the token when the user holds.
             uint256 affiliatevault;                 /// W06 -- > The user's affiliate bonus balance that can be withdrawn.	
@@ -551,7 +558,12 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             uint256 bonusparameter_after;           /// X18 -- > Bonus parameter after the user makes a withdrawal (withdrawing tokens reduces the bonus parameter).
             uint256 tokenbalance_sync;              /// X19 -- > For data accuracy, each function call will sync with balanceOf.  
             uint256 timeframe;                      /// X20 -- > The time interval since the last withdrawal.   
-            uint256 code;                           /// X21 -- > The identification code for the type of withdrawal: user (01) or deployer (02).
+            uint256 code;                           
+            
+            /// code - X21 -- > The identification code for the type of withdrawal: 
+            // 1. Withdraw history for tokens, where both user and deployer have the same code, which is (1).
+            // 2. Withdraw affiliate balance by the user.
+            // 3. Withdraw affiliate balance & not eligible balance by the deployer.
         }
 
 
@@ -592,7 +604,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
     * @notice . function to get the most accurate estimate of the amount of tokens ready to be withdrawn.
     */
 
-     function GetAvailabletowithdraw(uint256 hold_id) public view returns (uint256 timeframe, uint256 available ) {
+	function GetAvailabletowithdraw(uint256 hold_id) public view returns (uint256 timeframe, uint256 available ) {
 
         Safe storage s = _safes[hold_id];
 
@@ -656,7 +668,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             data            = new Bonushistory[](limit_);
 
 
-            for (uint256 i = limit_; i > 0; --i) {
+            for (uint256 i = limit_; i != 0; --i) {
                 data[limit_ - i] = _GetBonusHistory_byAddress(_id_bonushistory[address_][length - i]);
             }
             
@@ -797,7 +809,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             uint256 length  = _id_withdrawhistory[address_].length;
             data            = new Withdrawhistory[](length);
 
-            for (uint256 i = length; i > 0; --i) {
+            for (uint256 i = length; i != 0; --i) {
                 data[length - i] = _GetWithdrawHistory_byAddress(_id_withdrawhistory[address_][i - 1]);
             }
 
@@ -817,18 +829,29 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 	
 
     event onSave            (address indexed from, address indexed tokenaddress, uint256 percent, string tokensymbol, uint256 maxcontribution); 
-    event onCashbackCode    (address indexed from, string cashbackcode, uint256 year);	
+    event onCashbackCode	(address indexed from, string cashbackcode, uint256 year);	
 
     event onSignDisclaimer  (address indexed from, string disclaimer); 	
-    event onHoldplatform    (address indexed from, address indexed tokenaddress, uint256 holdid, string tokensymbol, uint256 amount, uint256 tokenprice, uint256 usdvalue);     
+    event onHoldplatform	(address indexed from, address indexed tokenaddress, uint256 holdid, string tokensymbol, uint256 amount, uint256 tokenprice, uint256 usdvalue);     
     event onWithdraw	    (address indexed from, address indexed tokenaddress, uint256 holdid, string tokensymbol, uint256 amount, uint256 tokenprice, uint256 usdvalue);  
     event onAffiliate	    (address indexed from, address indexed tokenaddress, string tokensymbol, uint256 amount, uint256 tokenprice, uint256 usdvalue); 
 
-    event onLoad	    (address indexed from);	
-    event onGasOptimization (address indexed from);	
+    event onLoad	        (address indexed from);	
+    event onGasOptimization	(address indexed from);	
     event onTryTestnet	    (address indexed from, uint256 lenght);
-    event onTestnetClose    (address indexed from);
-    
+    event onTestnetClose	(address indexed from);
+
+    // ⫸ This event is not used because it exceeds 24,576 bytes.
+
+    // event onRandomString (address indexed from, string cashbackcode); 
+    // event onHistory1 (address indexed from, uint256 bonusId); 
+    // event onHistory2 (address indexed from, uint256 bonusId); 
+    // event onwithdrawhistory_token (address indexed from, uint256 withdrawId); 
+    // event onwithdrawhistory_affiliate (address indexed from, uint256 withdrawId); 
+    // event onSyncTVL  (address indexed from, address indexed tokenaddress, uint256 tokenprice); 
+    // event onStart (address indexed from, uint256 timestamp); 
+
+
     // -----------------------------------------
     // ✦ Custom Error
     // -----------------------------------------
@@ -859,7 +882,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         User storage u   = _user[msg.sender];
         
         require(!u.sign);
-
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-01) User has already signed
+        
         u.sign           = true;
         // By accessing this website address you are deemed to have read, 
         // understood and agreed to all terms and conditions that have been written on the Holdplatform.com website
@@ -876,7 +901,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
     // Random String Generator (Max length 0x + 15 = 17)
     function _randomString() private {
 
-	uint256 length = 15;
+		uint256 length = 15;
 
         bytes memory randomWord = new bytes(length);
         /// Since we have 15 Characters
@@ -901,6 +926,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         _holdstatus_bycashbackcode[fullString]       = true;
         _searchaddress_bycashbackcode[fullString]    = msg.sender;
 
+        // ⫸ This event is not used because it exceeds 24,576 bytes.
+        // emit onRandomString (address indexed from, string cashbackcode); 
+
     }
 
 
@@ -918,16 +946,18 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
     function CashbackCode(string memory _cashbackcode, uint256 firsttime_buybitcoin) public nonReentrant {	
 
         require(firsttime_buybitcoin > 2008);
-
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-02) Invalid year: must be after 2008
+        
         address referreraddress = _searchaddress_bycashbackcode[_cashbackcode];
 
-        User storage u                          = _user[msg.sender];
-        User storage ureferrer                  = _user[referreraddress];
+           User storage u                          = _user[msg.sender];
+           User storage ureferrer                  = _user[referreraddress];
 
-        //  Onlyonce - Update registration time
+            //  Onlyonce - Update registration time
         if (u.unixregister == 0) { 
-	    u.unixregister = block.timestamp;
-	}  
+			u.unixregister = block.timestamp;
+		}  
 
        
         if (keccak256(abi.encodePacked(u.cashbackcode)) == keccak256(abi.encodePacked("")) ) {    	  
@@ -973,7 +1003,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
     */
 
 
-     function Holdplatform(address TokenAddress, uint256 amount, uint256 TokenPrice ) public nonReentrant {
+	function Holdplatform(address TokenAddress, uint256 amount, uint256 TokenPrice ) public nonReentrant {
 
         /* Deposit - only msg.sender == tx.origin is allowed, 
         this is to prevent a smart contract or bot from depositing into the Holdplatform
@@ -984,33 +1014,45 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
          */
 
-        require(msg.sender == tx.origin);   
+        require(msg.sender == tx.origin); 
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-03) Only direct transactions allowed
+
+
         _holdplatform1(TokenAddress, amount, TokenPrice);
-     }
+	}
 
     /** 
     * @dev Holdplatform - Part 1
     */
 
-     function _holdplatform1(address TokenAddress, uint256 amount, uint256 TokenPrice ) private {
+	function _holdplatform1(address TokenAddress, uint256 amount, uint256 TokenPrice ) private {
 
         require(_launch != 0);   
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-04) Launch parameter cannot be zero
 
         uint256 length_disclaimer       = _disclaimer[msg.sender].length;
         uint256 length_hold             = _idaddress[msg.sender].length;  
 
         require(length_disclaimer == add(length_hold,1));
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-05) Disclaimer length must be hold length + 1
         
-        /// Token Price 18 Decimal --> Example BTC $50123 -- > 50123000000000000000000
+        /// Token Price 26 Decimal --> Example BTC $50123 -- > 50123 + 8 digit 00000000 + 00000000000000000
 
-        Tokenlist storage t             = _tokenlist[TokenAddress];
-        User storage u                  = _user[msg.sender];
-        Stat storage w                  = _stat[TokenAddress][msg.sender];
+        Tokenlist storage t                 = _tokenlist[TokenAddress];
+        User storage u                      = _user[msg.sender];
+        Stat storage w                      = _stat[TokenAddress][msg.sender];
        
         require(amount != 0);
-	require(add(w.depositparameter, amount) < add(t.max_contribution,1));       // The total of old and new deposits cannot exceed the maximum contribution
+		require(add(w.depositparameter, amount) < add(t.max_contribution,1));       // The total of old and new deposits cannot exceed the maximum contribution
 
-	// Remaining Balance -> tokens that are still stored + new amount must <= Max Contribution
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-06) Amount must be greater than zero
+        // (Message-07) Exceeds maximum contribution limit
+
+		// Remaining Balance -> tokens that are still stored + new amount must <= Max Contribution
 
         // Onlyonce - Update registration time
         if (u.unixregister == 0) {  u.unixregister = block.timestamp; }  
@@ -1020,14 +1062,26 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         if (!t.contractstatus) {
             revert TokenNotRegistered();  //Revert, if the token address entered has not been added
         } else { 
-            ERC20Interface token 	= ERC20Interface(TokenAddress);       
-	    require(token.transferFrom(msg.sender, address(this), amount));	
+
+
+        /* 
+        IERC20 token  = IERC20(TokenAddress);       
+		token.safeTransferFrom(msg.sender, address(this), amount);
+            
+        ⫸ This function is not used because it exceeds 24,576 bytes.
+        */
+        
+            ERC20Interface token 			= ERC20Interface(TokenAddress);       
+			require(token.transferFrom(msg.sender, address(this), amount));	
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-08)  Token transfer failed
+           
         }
 
-	if (!u.status) {
+		if (!u.status) {
             /// This happens only once during the first hold.
             _id++;   
-	    _idnumber[_id] 	            = msg.sender; 
+			_idnumber[_id] 			        = msg.sender; 
             w.unix_lastwithdraw             = block.timestamp;
 			
             // Checking if the cashback code has been stored?
@@ -1038,8 +1092,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
                 emit onCashbackCode(msg.sender, u.cashbackcode, u.firsttimebuybitcoin);	
             }
-	    _randomString(); /// This happens only once during the first hold.
-	}
+			_randomString(); /// This happens only once during the first hold.
+		}
 
         // -- Checking Affiliate --
         string memory ref                   = u.cashbackcode;
@@ -1058,11 +1112,11 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         w.depositparameter                  = add(w.depositparameter,amount);  
 
        if (!w.activeuser) {
-            w.activeuser                    = true; 
-            w.tokenaddress                  = TokenAddress;
-            w.useraddress                   = msg.sender; 
-            w.tokendecimal                  = t.tokendecimal;
-            w.tokensymbol                   = t.tokensymbol;
+            w.activeuser                = true; 
+            w.tokenaddress              = TokenAddress;
+            w.useraddress               = msg.sender; 
+            w.tokendecimal              = t.tokendecimal;
+            w.tokensymbol               = t.tokensymbol;
               
             t.activeuser++; 
             t.totaluser++;                                 
@@ -1088,7 +1142,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         s.unix_signdisclaimer               = _disclaimer[msg.sender][length_hold];
 
         _holdplatform2(TokenAddress, OldContribution, amount, ReferrerAddress, BonusParameter, _count);
-     }
+	}
 
     /** 
     * @dev Holdplatform - Part 2
@@ -1178,12 +1232,12 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
         if (keccak256(abi.encodePacked(u.cashbackcode)) == keccak256(abi.encodePacked("0x000000000000000")) && !u.status || struct_id == 1) {
 
-            s.not_eligible                  			     = add(s.not_eligible, AvailableCashback);
+            s.not_eligible                  = add(s.not_eligible, AvailableCashback);
 
             _stat[TokenAddress][c_deployer].stat_noteligible         = add(_stat[TokenAddress][c_deployer].stat_noteligible, AvailableCashback);
             _stat[TokenAddress][c_deployer].noteligible_balance      = add(_stat[TokenAddress][c_deployer].noteligible_balance, AvailableCashback);
 
-            AvailableCashback               			     = 0;
+            AvailableCashback               = 0;
 
         } 
 
@@ -1191,7 +1245,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             u.status      = true;
         } 
 
-	uint256 endtime		            = add(block.timestamp, t.holdingtime_inseconds);	// block.timestamp + Holding Time (in seconds) 
+	    uint256 endtime		                = add(block.timestamp, t.holdingtime_inseconds);	// block.timestamp + Holding Time (in seconds) 
 
         /// Update Struct - Safe User [S]
         s.amount                            = NewContribution;
@@ -1213,12 +1267,31 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         s.allcontribution                   = AllContribution;
         s.usdvalue_deposit                  = mul(s.amount,s.tokenprice_start);
 
+        /* 
+             s.usdvalue_deposit             = div(mul(s.amount,s.tokenprice_start), 10 ** s.tokendecimal );
+            ⫸ This function is not used because it exceeds 24,576 bytes.
+
+            The history of token records in USD will be accurate if the tokens used have the same number of decimals. 
+            If a user on Holdplatform holds two different tokens with different decimal counts, the total USD deposit becomes invalid, 
+            as the byte count has reached the limit of 24,576 bytes. Therefore, I have created a solution:
+
+            The solution is implemented in the web3 interface. 
+            The number of zeros in stored data should be equal to 10 ** 26. 
+            Thus, when using two tokens with 8 and 18 decimals in the web3 interface, the following applies:
+
+            A. Tokens with 8 decimals are multiplied by (10 ** 18).
+            B. Tokens with 18 decimals are multiplied by (10 ** 8).
+
+            This way, all data will be stored as Token Price * (10 ** 26).
+       
+        */
+
         if ( s.affiliatebonus != 0 ){	
-		s.percentage_affiliate 	    = div(mul(s.affiliatebonus, _twenty), s.amount) ; 
+		s.percentage_affiliate 	            = div(mul(s.affiliatebonus, _twenty), s.amount) ; 
         }
 
         if ( s.not_eligible != 0 ){	
-		s.percentage_not_eligible   = div(mul(s.not_eligible, _twenty), s.amount) ; 
+		s.percentage_not_eligible	        = div(mul(s.not_eligible, _twenty), s.amount) ; 
         }		
 
          /* There are no changes to the data, so the data remains default
@@ -1231,9 +1304,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         // Create Event - onHoldplatform
         emit onHoldplatform(msg.sender, s.tokenaddress, s.id, s.tokensymbol, s.amount, s.tokenprice_start, s.usdvalue_deposit);
 
-        u.usddeposit        		     = add(u.usddeposit, s.usdvalue_deposit);
-        u.sign                               = false;
+        u.usddeposit        = add(u.usddeposit, s.usdvalue_deposit);
 
+        u.sign              = false;
         _syncTVL(s.tokenaddress,s.tokenprice_start);
 
         /// Additional - High gas fee!
@@ -1249,7 +1322,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
     function _history1(address TokenAddress, uint256 struct_id, uint256 tokenbalance, uint256 tokenbalance_sync) private {
 
-        Safe storage s               		= _safes[struct_id];
+        Safe        storage s               = _safes[struct_id];
 
         if ( s.affiliatebonus != 0 ) {
 
@@ -1296,13 +1369,16 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
             _id_bonushistory[referrer_].push(c_tx_bonushistory);
         } 
+
+        // ⫸ This event is not used because it exceeds 24,576 bytes.
+        // emit onHistory1 (address indexed from, uint256 bonusId); 
   }
 
     /** 
     * @dev If gas optimization is false, then all bonus (deployer) records will be recorded in the smart contract
     */
 
-  function _history2(address TokenAddress, uint256 struct_id, uint256 tokenbalance, uint256 tokenbalance_sync) private {
+    function _history2(address TokenAddress, uint256 struct_id, uint256 tokenbalance, uint256 tokenbalance_sync) private {
 
         Safe storage s                      = _safes[struct_id];
         address c_deployer                  = _deployer;
@@ -1323,8 +1399,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
              v_deployer.code                = 3;   
 
             if ( sub(s.not_eligible, 1 ) >= div(s.amount,10 ) ) {
-                v_deployer.transactiontype  = "Fee 2% + Without Cashback";  
-                v_deployer.code             = 4; 
+                v_deployer.transactiontype     = "Fee 2% + Without Cashback";  
+                v_deployer.code                = 4; 
             } 
         }
 
@@ -1355,6 +1431,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         
 
         _id_bonushistory[c_deployer].push(_tx_bonushistory); 
+
+        // ⫸ This event is not used because it exceeds 24,576 bytes.
+        // emit onHistory2 (address indexed from, uint256 bonusId); 
   }
 
     /**** Withdraw *****/
@@ -1375,15 +1454,23 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
     function Withdraw(address TokenAddress, uint256 hold_id, uint256 TokenPrice) public nonReentrant {
         require(TokenAddress != address(0));
-        require(hold_id != 0);        
+        require(hold_id != 0);     
+
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-09) Invalid token address
+        // (Message-10) Hold ID must be non-zero
         
         Safe storage s = _safes[hold_id];
 
         // A bot can never withdraw because the system rejects deposits from a bot.
         require(s.user == msg.sender);  
-	require(s.tokenaddress == TokenAddress);
+		require(s.tokenaddress == TokenAddress);
+
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-11) Caller is not the authorized user
+        // (Message-12) Token address mismatch
 		
-	if (s.amountbalance == 0) { 
+		if (s.amountbalance == 0) { 
             revert EmptyBalance(); 
         } else { 
             Stat storage w              = _stat[s.tokenaddress][msg.sender]; 
@@ -1391,8 +1478,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             if(s.endtime <= block.timestamp ){ //--o  Hold Complete 
 
                 // Calculate the difference (in seconds) between the time of the last withdrawal and the current time
-                s.timeframe  			    = sub(block.timestamp, s.lasttime);	
-                s.payment_queue 	            = add(s.amountbalance, s.cashbackbalance);			 
+                s.timeframe  			            = sub(block.timestamp, s.lasttime);	
+                s.payment_queue 	                = add(s.amountbalance, s.cashbackbalance);			 
                 s.amountbalance                     = 0;   
                 s.lasttime                          = block.timestamp;
 
@@ -1421,63 +1508,63 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
     function _partialWithdraw(address TokenAddress, uint256 hold_id, uint256 TokenPrice) private {
 
-        Safe storage s              	= _safes[hold_id];
+        Safe storage s              = _safes[hold_id];
 
         // Calculate the difference (in seconds) between the time of the last withdrawal and the current time
-        s.timeframe  	            	= sub(block.timestamp, s.lasttime);	
+        s.timeframe  			    = sub(block.timestamp, s.lasttime);	
 
         // Calculate the total number of tokens unlocked within one month ( 30 days - 2592000 seconds )
-        uint256 onemonth            	= div(mul(s.amount, s.percentage), 100 );
-        uint256 CalculateWithdraw   	= div(mul(onemonth, s.timeframe),2592000);
+        uint256 onemonth            = div(mul(s.amount, s.percentage), 100 );
+        uint256 CalculateWithdraw   = div(mul(onemonth, s.timeframe),2592000);
         
-	/// S.amount * s.percentage / 100 * timeframe / seconds30days	
+		/// S.amount * s.percentage / 100 * timeframe / seconds30days	
 		                         
-	uint256 MaxWithdraw 	    	= div(s.amount, 10);
+		uint256 MaxWithdraw 		= div(s.amount, 10);
 
         uint256 MaxAccumulation;
         uint256 payment_queue;
         uint256 tokenreceived;
 			
-	// Maximum withdraw before unlocked, Max 10% Accumulation
-	//if (CalculateWithdraw >= MaxWithdraw) { MaxAccumulation = MaxWithdraw;  } else { MaxAccumulation = CalculateWithdraw;  }
+		// Maximum withdraw before unlocked, Max 10% Accumulation
+		//if (CalculateWithdraw >= MaxWithdraw) { MaxAccumulation = MaxWithdraw;  } else { MaxAccumulation = CalculateWithdraw;  }
         MaxAccumulation = (CalculateWithdraw >= MaxWithdraw) ? MaxWithdraw : CalculateWithdraw;
 
-	// Maximum withdraw = User Amount Balance   
-	//if (MaxAccumulation >= s.amountbalance) {  payment_queue = s.amountbalance; } else { payment_queue = MaxAccumulation; }
+		// Maximum withdraw = User Amount Balance   
+		//if (MaxAccumulation >= s.amountbalance) {  payment_queue = s.amountbalance; } else { payment_queue = MaxAccumulation; }
         payment_queue = MaxAccumulation >= s.amountbalance ? s.amountbalance : MaxAccumulation;
 						
-	s.amountbalance 		= sub(s.amountbalance, payment_queue);
+		s.amountbalance 			    = sub(s.amountbalance, payment_queue);
 		
-	if (s.cashbackbalance != 0) { 
-	    s.cashbackstatus 	        = true ; 
-	    s.payment_queue 		= add(s.cashbackbalance, payment_queue); 
-	} else {
-            s.payment_queue 		= payment_queue;
+		if (s.cashbackbalance != 0) { 
+		    s.cashbackstatus 	        = true ; 
+		    s.payment_queue 		    = add(s.cashbackbalance, payment_queue); 
+		} else {
+            s.payment_queue 			= payment_queue;
         }
 		
         User storage u                  = _user[msg.sender];
 
-        s.cashbackbalance 		= 0; 
-	s.lasttime 			= block.timestamp;
+        s.cashbackbalance 			    = 0; 
+		s.lasttime 					    = block.timestamp;
 
-        uint256 affiliateandfee 	= div(mul(s.amount, 12), 100) ;         // 12%
-	uint256 maxcashback 		= div(mul(s.amount, 16), 100) ;         // 16%
+        uint256 affiliateandfee 	    = div(mul(s.amount, 12), 100) ;         // 12%
+		uint256 maxcashback 		    = div(mul(s.amount, 16), 100) ;         // 16%
 
-	uint256 firstid                 = s.id; 
+		uint256 firstid                 = s.id; 
         
 		
-	/*if (keccak256(abi.encodePacked(u.cashbackcode)) == keccak256(abi.encodePacked("0x000000000000000")) && _idaddress[msg.sender][0] == firstid ) {
-	     tokenreceived 		= sub(sub(sub(s.amount, affiliateandfee), maxcashback), s.amountbalance) ;	
-	} else { 
-            tokenreceived 		= sub(sub(s.amount, affiliateandfee), s.amountbalance) ;
+		/*if (keccak256(abi.encodePacked(u.cashbackcode)) == keccak256(abi.encodePacked("0x000000000000000")) && _idaddress[msg.sender][0] == firstid ) {
+			tokenreceived 	= sub(sub(sub(s.amount, affiliateandfee), maxcashback), s.amountbalance) ;	
+		} else { 
+            tokenreceived 	= sub(sub(s.amount, affiliateandfee), s.amountbalance) ;
         } */
 
 
         tokenreceived = keccak256(abi.encodePacked(u.cashbackcode)) == keccak256(abi.encodePacked("0x000000000000000")) && _idaddress[msg.sender][0] == firstid 
         ? sub(sub(sub(s.amount, affiliateandfee), maxcashback), s.amountbalance) : sub(sub(s.amount, affiliateandfee), s.amountbalance);
 
-	s.percentagereceive 	        = div(mul(tokenreceived, _twenty), s.amount) ; 	
-	s.tokenreceive 			= tokenreceived; 
+		s.percentagereceive 	        = div(mul(tokenreceived, _twenty), s.amount) ; 	
+		s.tokenreceive 			        = tokenreceived; 
 
         _withdrawPaid(TokenAddress, hold_id, TokenPrice); 
     }
@@ -1492,12 +1579,15 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         Tokenlist storage t             = _tokenlist[s.tokenaddress];
         Stat storage w                  = _stat[s.tokenaddress][msg.sender]; 
 
-        address dappsAddress            = address(this);
+        address dappsAddress             = address(this);
 
         ERC20Interface token = ERC20Interface(TokenAddress);        
         require(token.balanceOf(dappsAddress) > sub(s.payment_queue,1));
 
-	token.transfer(s.user, s.payment_queue);
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-13) Insufficient balance for payment queue
+
+		token.transfer(s.user, s.payment_queue);
         /// ----------------------------------------------------------
 
         s.lastwithdraw                  = s.payment_queue;
@@ -1509,8 +1599,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         t.totaltx_unlock++; 
 
         uint256 bonusparameterbefore    = w.bonusparameter;
-        w.lifetimepayments 	        = add(w.lifetimepayments, s.lastwithdraw);
-        w.bonusparameter 	        = sub(w.bonusparameter, s.lastwithdraw);
+        w.lifetimepayments 	            = add(w.lifetimepayments, s.lastwithdraw);
+        w.bonusparameter 	            = sub(w.bonusparameter, s.lastwithdraw);
         w.depositparameter              = sub(w.depositparameter, s.lastwithdraw);
         w.unix_lastwithdraw             = s.lasttime;
         w.tx_withdraw++;               
@@ -1522,25 +1612,25 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         w.mybalance                     = sub(w.mybalance, s.lastwithdraw);
 
         if (s.amountbalance == 0 ) {
-            s.tokenprice_end            = TokenPrice;
+            s.tokenprice_end                = TokenPrice;
 
             //// The previous 12% was given so that the bonus parameters were 100% intact without deductions from fees and referral bonuses
-            uint256 affliateandfee      = div(mul(s.amount, 12), 100 );
+            uint256 affliateandfee          = div(mul(s.amount, 12), 100 );
 
             if( !s.cashbackstatus) {
-                affliateandfee          = div(mul(s.amount, 28), 100 );
+                affliateandfee              = div(mul(s.amount, 28), 100 );
             }
 
             if (w.mybalance == 0) {
-                w.depositparameter      = 0;
-                w.bonusparameter        = 0;
-                w.activeuser            = false;
+                w.depositparameter          = 0;
+                w.bonusparameter            = 0;
+                w.activeuser                = false;
 
                 t.activeuser--; 
                 t.totaluser--;
             } else {
-                w.depositparameter      = sub(w.depositparameter, affliateandfee);
-                w.bonusparameter        = sub(w.bonusparameter, affliateandfee);
+                w.depositparameter              = sub(w.depositparameter, affliateandfee);
+                w.bonusparameter                = sub(w.bonusparameter, affliateandfee);
             }
         }
 
@@ -1561,47 +1651,50 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
     function _withdrawhistory_token(address TokenAddress, uint256 hold_id, uint256 tokenbalancebefore, uint256 bonusparameterbefore,uint256 TokenPrice) private {
 
-        Safe storage s              	= _safes[hold_id];
-        Tokenlist storage t         	= _tokenlist[s.tokenaddress];
-        Stat storage w              	= _stat[s.tokenaddress][msg.sender]; 
+        Safe storage s              = _safes[hold_id];
+        Tokenlist storage t         = _tokenlist[s.tokenaddress];
+        Stat storage w              = _stat[s.tokenaddress][msg.sender]; 
 
-        address dappsAddress        	= address(this);
+        address dappsAddress        = address(this);
 
         /// Update Struct - Withdrawhistory 
         _tx_withdrawhistory++;
 
-        uint256 c_tx_withdrawhistory	= _tx_withdrawhistory;
+        uint256 c_tx_withdrawhistory= _tx_withdrawhistory;
 
-        Withdrawhistory storage x   	= _withdrawhistory[c_tx_withdrawhistory];
+        Withdrawhistory storage x   = _withdrawhistory[c_tx_withdrawhistory];
 
-        x.id                        	= c_tx_withdrawhistory;
-        x.holdid                    	= s.id;	 
-        x.blocknumber               	= block.number;        
-        x.transactiontype           	= "Withdraw Token";       
-        x.from                      	= dappsAddress;                
-        x.to                        	= msg.sender;                   
-        x.tokenaddress              	= TokenAddress;                  
-        x.tokensymbol               	= t.tokensymbol;             
-        x.tokendecimal              	= t.tokendecimal;               
-        x.amount                    	= s.lastwithdraw;             
-        x.unixtime                  	= block.timestamp;              
-        x.balancebefore             	= add(s.amountbalance,s.lastwithdraw);             
-        x.balanceafter              	= s.amountbalance;                             
-        x.tokenbalance_before       	= tokenbalancebefore;
-        x.tokenbalance_after        	= t.tokenbalance;
-        x.bonusparameter_before     	= bonusparameterbefore;
-        x.bonusparameter_after      	= w.bonusparameter;
-        x.timeframe                 	= s.timeframe; 
-        x.tokenprice                	= TokenPrice; 
-        x.usdvalue                  	= mul(s.lastwithdraw,TokenPrice );
-        x.code                      	= 1;
+        x.id                        = c_tx_withdrawhistory;
+        x.holdid                    = s.id;	 
+        x.blocknumber               = block.number;        
+        x.transactiontype           = "Withdraw Token";       
+        x.from                      = dappsAddress;                
+        x.to                        = msg.sender;                   
+        x.tokenaddress              = TokenAddress;                  
+        x.tokensymbol               = t.tokensymbol;             
+        x.tokendecimal              = t.tokendecimal;               
+        x.amount                    = s.lastwithdraw;             
+        x.unixtime                  = block.timestamp;              
+        x.balancebefore             = add(s.amountbalance,s.lastwithdraw);             
+        x.balanceafter              = s.amountbalance;                             
+        x.tokenbalance_before       = tokenbalancebefore;
+        x.tokenbalance_after        = t.tokenbalance;
+        x.bonusparameter_before     = bonusparameterbefore;
+        x.bonusparameter_after      = w.bonusparameter;
+        x.timeframe                 = s.timeframe; 
+        x.tokenprice                = TokenPrice; 
+        x.usdvalue                  = mul(s.lastwithdraw,TokenPrice );
+        x.code                      = 1;
 
         /// Sync Real Balance  
-        ERC20Interface token        	= ERC20Interface(TokenAddress);     
-	uint256 syncbalance         	= token.balanceOf(dappsAddress);
-        x.tokenbalance_sync         	= syncbalance; 
+        ERC20Interface token        = ERC20Interface(TokenAddress);     
+		uint256 syncbalance         = token.balanceOf(dappsAddress);
+        x.tokenbalance_sync         = syncbalance; 
         
         _id_withdrawhistory[msg.sender].push(c_tx_withdrawhistory); 
+
+        // ⫸ This event is not used because it exceeds 24,576 bytes.
+        // emit onwithdrawhistory_token (address indexed from, uint256 withdrawId);
     }
 
     /**** Affiliate *****/
@@ -1625,23 +1718,28 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             Stat storage w                  = _stat[TokenAddress][msg.sender];
 
             require(w.affiliatevault != 0 ); 
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-14) Affiliate vault must be non-zero
 
-            address dappsAddress     	    = address(this);                
+            address dappsAddress     = address(this);                
 
             /// Send Affiliate Balances
             ERC20Interface token = ERC20Interface(TokenAddress);
             require(token.balanceOf(dappsAddress) > sub(w.affiliatevault,1));
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-15) Insufficient balance for affiliate vault
+
             token.transfer(msg.sender, w.affiliatevault);	                                   
 
             /// Update Struct - Tokenlist
-            uint256 tokenbalancebefore      = t.tokenbalance;
-            t.totalaffiliatepayments        = add(t.totalaffiliatepayments,w.affiliatevault);           
-            t.tokenbalance                  = sub(t.tokenbalance,w.affiliatevault);  
+            uint256 tokenbalancebefore  = t.tokenbalance;
+            t.totalaffiliatepayments    = add(t.totalaffiliatepayments,w.affiliatevault);           
+            t.tokenbalance              = sub(t.tokenbalance,w.affiliatevault);  
 
             t.totaltx_affiliate++; 
             
             /// Update Struct - Stat
-            w.affiliatepayments         = add(w.affiliatepayments,w.affiliatevault);          
+            w.affiliatepayments          = add(w.affiliatepayments,w.affiliatevault);          
             w.tx_affiliatewithdraw++;                                                           
 
             // Event
@@ -1672,11 +1770,15 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         address c_deployer             = _deployer;         // Cached Deployer
 
         require(msg.sender ==  c_deployer ); 
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-16) Caller is not the contract deployer
 
         Tokenlist storage t             = _tokenlist[TokenAddress];
         Stat storage w                  = _stat[TokenAddress][msg.sender];
 
         require(w.affiliatevault != 0 || w.fee_balance != 0 || w.noteligible_balance != 0 );
+        // ⫸ This function is not used because it exceeds 24,576 bytes.
+        // (Message-17) All balances cannot be zero
 
         uint256 tokenbalancebefore  = t.tokenbalance;
         ERC20Interface token = ERC20Interface(TokenAddress); 
@@ -1686,6 +1788,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         /// Send Affiliate Balance
         if (w.affiliatevault != 0 ){        
             require(token.balanceOf(dappsAddress) > sub(w.affiliatevault,1));
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-18) Insufficient dappsAddress balance for affiliate vault
+
             token.transfer(c_deployer, w.affiliatevault);
 
             /// Update Struct - Tokenlist
@@ -1698,6 +1803,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         }
         if (w.fee_balance != 0 ){         
             require(token.balanceOf(dappsAddress) > sub(w.fee_balance,1));
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-19) Insufficient dappsAddress balance for fee balance
+
             token.transfer(c_deployer, w.fee_balance);
 
             /// Update Struct - Stat
@@ -1707,9 +1815,11 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         if (w.noteligible_balance != 0 ){   
             require(token.balanceOf(dappsAddress) > sub(w.noteligible_balance,1));
             token.transfer(c_deployer, w.noteligible_balance);
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-20) Insufficient dappsAddress balance for not eligible balance
 
             /// Update Struct - Stat
-            w.noteligible_paid          = add(w.noteligible_paid,w.noteligible_balance);        
+            w.noteligible_paid           = add(w.noteligible_paid,w.noteligible_balance);        
             w.tx_noteligible++;                                                                     
         }
 
@@ -1790,6 +1900,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
         _id_withdrawhistory[msg.sender].push(c_tx_withdrawhistory);
 
+        // ⫸ This event is not used because it exceeds 24,576 bytes.
+        // emit onwithdrawhistory_affiliate (address indexed from, uint256 withdrawId); 
+
     }
 
     /** 
@@ -1816,6 +1929,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         t.tokenbalance_sync             = token.balanceOf(dappsAddress);
 
         w.tokenprice                    = TokenPrice;
+
+        // ⫸ This event is not used because it exceeds 24,576 bytes.
+        // emit onSyncTVL  (address indexed from, address indexed tokenaddress, uint256 tokenprice); 
     }
 
 
@@ -1834,6 +1950,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         // Testnet - Early Claim
         if (block.timestamp >= add(_launch, 2592000)) {   // 2592000 Launchtime + 30 days
              require(!_testnet_close);   
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-20) Testnet is closed
+
             _testnet_close = true; 
 
              emit onTestnetClose(msg.sender);
@@ -1874,6 +1993,8 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             revert Launched(); 
         }
 
+        // ⫸ This event is not used because it exceeds 24,576 bytes.
+        // emit onStart (address indexed from, uint256 timestamp); 
 
     }
 
@@ -1895,7 +2016,9 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
     function Save(address TokenAddress, uint256 _maxcontribution, uint256 _PercentPermonth) public nonReentrant restricted  {
 
-            require(_launch != 0);   
+            require(_launch != 0); 
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-21) Launch parameter must be set (Timestamp)
 
             // _maxcontribution = Number + Total Decimals
             // Data that can be updated : Max Contribution & % Permonth for new HOLD!
@@ -1905,21 +2028,28 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             uint256 decimals = token.decimals();
 
             require(decimals < 19 ); //Token decimals can not be greater than 18
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-23) Token decimals can not be greater than 18
+
             uint256 TokenDecimal_ = decimals;
 
             string memory TokenSymbol       = token.symbol();
 
             require(_PercentPermonth > 2);
             require(_PercentPermonth < 13);
-
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-24) Monthly percent must be greater than 2
+            // (Message-25) Monthly percent must be less than 13
             
-            uint256 _HodlingTime 	    = mul(div(72, _PercentPermonth), 30);
-            uint256 HodlTime 		    = _HodlingTime * 1 days;
+            uint256 _HodlingTime 			= mul(div(72, _PercentPermonth), 30);
+            uint256 HodlTime 				= _HodlingTime * 1 days;
 
             Tokenlist storage t             = _tokenlist[TokenAddress];
 
             // Max Contribution cannot be updated to be smaller than the existing one
-            require(_maxcontribution > t.max_contribution);
+            require(_maxcontribution > sub(t.max_contribution, 1));
+            // ⫸ This function is not used because it exceeds 24,576 bytes.
+            // (Message-26) New max contribution must exceed current limit
 
             if (t.unix_contractadded == 0) {
 
@@ -1997,7 +2127,7 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 
 	function mul(uint256 a, uint256 b) internal pure returns (uint256) {
 		if (a == 0) {
-		   return 0;
+			return 0;
 		}
 		uint256 c = a * b; 
 		require(c / a == b); 
@@ -2011,14 +2141,22 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 	}
 	
 	function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-		require(b <= a);
+		//require(b <= a); 
+        require(b < a + 1);
 		uint256 c = a - b;
 		return c;
 	}
 	
 	function add(uint256 a, uint256 b) internal pure returns (uint256) {
 		uint256 c = a + b;
-		require(c >= a);
+		//require(c >= a);
+        require(c > a - 1);
 		return c;
 	}
+
+    // ⫸ This function is not used because it exceeds 24,576 bytes.
+    // (Message-27) require(c / a == b, "Division result mismatch");
+    // (Message-28) require(b != 0, "Value of b must be non-zero");
+    // (Message-29) require(b < a + 1, "Value of b exceeds limit");
+    // (Message-30) require(c > a - 1, "Value of c must be greater than a - 1");
 }

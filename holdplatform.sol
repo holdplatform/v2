@@ -29,7 +29,7 @@ import "./interfaces/ERC20Interface.sol";
     // -----------------------------------------
     // ✦✦✦ Testnet 2 - Holdplatform V2 
     // -----------------------------------------
-    // Mon Oct-28-2024 11:32:23 AM +UTC
+    // Mon Oct-28-2024 02:24:59 PM +UTC
 
 
     // -----------------------------------------
@@ -2141,22 +2141,20 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
 	}
 	
 	function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-		//require(b <= a); 
-        require(b < a + 1);
+		require(b <= a); 
 		uint256 c = a - b;
 		return c;
 	}
 	
 	function add(uint256 a, uint256 b) internal pure returns (uint256) {
 		uint256 c = a + b;
-		//require(c >= a);
-        require(c > a - 1);
+		require(c >= a);
 		return c;
 	}
 
     // ⫸ This function is not used because it exceeds 24,576 bytes.
     // (Message-27) require(c / a == b, "Division result mismatch");
     // (Message-28) require(b != 0, "Value of b must be non-zero");
-    // (Message-29) require(b < a + 1, "Value of b exceeds limit");
-    // (Message-30) require(c > a - 1, "Value of c must be greater than a - 1");
+    // (Message-29) require(b <= a, "Value of b exceeds limit");
+    // (Message-30) require(c >= a, "Value of c must be greater than or equal a");
 }

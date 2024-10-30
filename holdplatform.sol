@@ -27,9 +27,9 @@ import "./interfaces/ERC20Interface.sol";
 
 
     // -----------------------------------------
-    // ✦✦✦ Testnet 2 - Holdplatform V2 
+    // ✦✦✦ Testnet 3 - Holdplatform V2 
     // -----------------------------------------
-    // Mon Oct-28-2024 02:24:59 PM +UTC
+    // Wed Oct-30-2024 02:03:47 PM +UTC
 
 
     // -----------------------------------------
@@ -1071,8 +1071,14 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         ⫸ This function is not used because it exceeds 24,576 bytes.
         */
         
-            ERC20Interface token 			= ERC20Interface(TokenAddress);       
-			require(token.transferFrom(msg.sender, address(this), amount));	
+            ERC20Interface token 			= ERC20Interface(TokenAddress);  
+
+			// V1 require(token.transferFrom(msg.sender, address(this), amount));	
+            // V2 ↓↓↓↓↓↓↓
+            bool success = token.transferFrom(msg.sender, address(this), amount);
+            require(success);
+
+
             // ⫸ This function is not used because it exceeds 24,576 bytes.
             // (Message-08)  Token transfer failed
            
@@ -1587,7 +1593,10 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
         // ⫸ This function is not used because it exceeds 24,576 bytes.
         // (Message-13) Insufficient balance for payment queue
 
-		token.transfer(s.user, s.payment_queue);
+		// V1 token.transfer(s.user, s.payment_queue);
+        // V2 ↓↓↓↓↓↓↓
+        bool success = token.transfer(s.user, s.payment_queue);
+        require(success);
         /// ----------------------------------------------------------
 
         s.lastwithdraw                  = s.payment_queue;
@@ -1729,7 +1738,10 @@ contract Tesnet_HoldplatformV2 is ReentrancyGuard {
             // ⫸ This function is not used because it exceeds 24,576 bytes.
             // (Message-15) Insufficient balance for affiliate vault
 
-            token.transfer(msg.sender, w.affiliatevault);	                                   
+            // V1 token.transfer(msg.sender, w.affiliatevault);
+            // V2 ↓↓↓↓↓↓↓
+            bool success = token.transfer(msg.sender, w.affiliatevault);
+            require(success);	                                   
 
             /// Update Struct - Tokenlist
             uint256 tokenbalancebefore  = t.tokenbalance;

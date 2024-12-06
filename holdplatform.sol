@@ -6,7 +6,7 @@ import "./openzeppelin/security/ReentrancyGuard.sol";
 import "./interfaces/ERC20Interface.sol";
 
 /* import "./openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol"; 
-    ⫸ This function is not used because it exceeds 24,576 bytes.
+    ⫸ This function is not used because it exceeds 24,576 bytes
 */
 
 

@@ -1,6 +1,7 @@
 ## Holdplatform V2
 
 Testnet 1 : https://holdplatform.com/testnet_app/
+
 Testnet 2 : https://holdplatform.com/testnet_app2/
 
 Mainnet : Coming Soon ⚡⚡⚡

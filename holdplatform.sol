@@ -6,7 +6,7 @@ import "./openzeppelin/security/ReentrancyGuard.sol";
 import "./interfaces/ERC20Interface.sol";
 
 /* import "./openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol"; 
-    ⫸ This function is not used because it exceeds 24,576 bytes
+    ⫸ This function is not used because it exceeds 24,576 bytes.
 */
 
 
@@ -27,9 +27,9 @@ import "./interfaces/ERC20Interface.sol";
 
 
     // -----------------------------------------
-    // ✦✦✦ Testnet 3 - Holdplatform V2 
+    // ✦✦✦ Mainnet - Holdplatform V2 
     // -----------------------------------------
-    // Wed Oct-30-2024 02:03:47 PM +UTC
+    // Dec-29-2024 11:08:59 AM +UTC
 
 
     // -----------------------------------------
@@ -315,7 +315,7 @@ import "./interfaces/ERC20Interface.sol";
 
 
 
-contract Tesnet_HoldplatformV2 is ReentrancyGuard {
+contract HoldplatformV2 is ReentrancyGuard {
 
     /* using SafeERC20 for IERC20; 
        ⫸ This function is not used because it exceeds 24,576 bytes.
